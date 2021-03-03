@@ -8,13 +8,16 @@
 
 import UIKit
 
-struct FT {
-    internal static let DefaultMargin = CGFloat(4)
-    internal static let DefaultCellMargin = CGFloat(6)
+public struct FT {
+    public static var DefaultMargin = CGFloat(4)
+    public static var DefaultMenuArrowWidth = CGFloat(8)
+    public static var DefaultMenuArrowHeight = CGFloat(10)
+    public static var DefaultCellMargin = CGFloat(6)
+    public static var DefaultArrowMargin = CGFloat(4)
+    
+    // MARK: - internal
     internal static let DefaultMenuIconSize = CGFloat(24)
     internal static let DefaultMenuCornerRadius = CGFloat(4)
-    internal static let DefaultMenuArrowWidth = CGFloat(8)
-    internal static let DefaultMenuArrowHeight = CGFloat(10)
     internal static let DefaultAnimationDuration = TimeInterval(0.2)
     internal static let DefaultBorderWidth = CGFloat(0.5)
     internal static let DefaultCornerRadius = CGFloat(4)

@@ -153,7 +153,9 @@ public class FTPopOverMenu: NSObject, FTPopOverMenuViewDelegate {
     fileprivate var menuArrowPoint: CGPoint = CGPoint.zero
     fileprivate var arrowDirection: FTPopOverMenuArrowDirection = .up
     fileprivate var popMenuHeight: CGFloat {
-        return configuration.menuRowHeight * CGFloat(self.menuNameArray.count) + FT.DefaultMenuArrowHeight
+        return configuration.menuRowHeight * CGFloat(self.menuNameArray.count)
+            + FT.DefaultMenuArrowHeight
+            + self.configuration.menuContentInset.top + self.configuration.menuContentInset.bottom
     }
     
     fileprivate func configureSenderRect() {
@@ -228,9 +230,10 @@ public class FTPopOverMenu: NSObject, FTPopOverMenuViewDelegate {
             point.y = popMenuHeight
         }
         if point.x + menuCenterX > UIScreen.ft_width() {
-            point.x = min(point.x - (UIScreen.ft_width() - configuration.menuWidth - FT.DefaultMargin), configuration.menuWidth - FT.DefaultMenuArrowWidth - FT.DefaultMargin)
+            point.x = min(point.x - (UIScreen.ft_width() - configuration.menuWidth - FT.DefaultMargin),
+                          configuration.menuWidth - FT.DefaultMenuArrowWidth - FT.DefaultArrowMargin)
         } else if point.x - menuCenterX < 0 {
-            point.x = max(FT.DefaultMenuCornerRadius + FT.DefaultMenuArrowWidth, point.x - FT.DefaultMargin)
+            point.x = max(FT.DefaultMenuCornerRadius + FT.DefaultMenuArrowWidth, point.x - FT.DefaultArrowMargin)
         } else {
             point.x = configuration.menuWidth/2
         }
@@ -360,11 +363,12 @@ fileprivate class FTPopOverMenuView: UIControl {
     }
     
     fileprivate func repositionMenuTableView() {
-        var menuRect: CGRect = CGRect(x: 0, y: FT.DefaultMenuArrowHeight, width: frame.size.width, height: frame.size.height - FT.DefaultMenuArrowHeight)
+        var tableRect: CGRect = CGRect(x: 0, y: FT.DefaultMenuArrowHeight, width: frame.size.width, height: frame.size.height - FT.DefaultMenuArrowHeight)
         if (arrowDirection == .down) {
-            menuRect = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height - FT.DefaultMenuArrowHeight)
+            tableRect = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height - FT.DefaultMenuArrowHeight)
         }
-        menuTableView.frame = menuRect
+        tableRect = tableRect.inset(by: self.configuration.menuContentInset)
+        menuTableView.frame = tableRect
         menuTableView.reloadData()
         if menuTableView.frame.height < configuration.menuRowHeight * CGFloat(menuNameArray.count) {
             menuTableView.isScrollEnabled = true
